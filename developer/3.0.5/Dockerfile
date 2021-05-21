@@ -4,7 +4,7 @@ ENV TG_VERSION="3.0.5" INSTALL_DIR="/home/tigergraph/tigergraph"
 
 RUN useradd -ms /bin/bash tigergraph && \
   apt-get -qq update && \
-  apt-get install -y --no-install-recommends sudo rdfind curl vim iproute2 net-tools cron ntp locales tar uuid-runtime openssh-client openssh-server && \
+  apt-get install -y --no-install-recommends sudo dh-strip-nondeterminism rdfind curl vim iproute2 net-tools cron ntp locales tar uuid-runtime openssh-client openssh-server && \
   mkdir /var/run/sshd && \
   echo 'root:root' | chpasswd && \
   echo 'tigergraph:tigergraph' | chpasswd && \
@@ -76,18 +76,10 @@ RUN useradd -ms /bin/bash tigergraph && \
   rm -Rf /var/log/*  && \
   cd /tmp && \
   rdfind -makesymlinks true /home /usr /bin /lib && \
-  curl -s -k -L http://172.16.202.138:8000/${TG_VERSION}-dev/pic_libs/librocksdb.a -o librocksdb.a && \
-  mv librocksdb.a ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/include/thirdparty/prebuilt/pic_libs/librocksdb.a && \
-  chmod 644 ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/include/thirdparty/prebuilt/pic_libs/librocksdb.a && \
-  curl -s -k -L http://172.16.202.138:8000/${TG_VERSION}-dev/lib/librocksdb.a -o librocksdb.a && \
-  mv librocksdb.a ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/lib/tg_${TG_VERSION}_dev/librocksdb.a && \
-  chmod 644 ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/lib/tg_${TG_VERSION}_dev/librocksdb.a && \
-  curl -s -k -L http://172.16.202.138:8000/${TG_VERSION}-dev/pic_libs/libcryptopp.a -o libcryptopp.a && \
-  mv libcryptopp.a ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/include/thirdparty/prebuilt/pic_libs/libcryptopp.a && \
-  chmod 644 ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/include/thirdparty/prebuilt/pic_libs/libcryptopp.a && \
-  curl -s -k -L http://172.16.202.138:8000/${TG_VERSION}-dev/lib/libcryptopp.a -o libcryptopp.a && \
-  mv libcryptopp.a ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/lib/tg_${TG_VERSION}_dev/libcryptopp.a && \
-  chmod 644 ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/lib/tg_${TG_VERSION}_dev/libcryptopp.a && \
+  curl -s -k -L http://172.16.202.138:8000/script/strip.sh -o strip.sh && \
+  chmod +x /tmp/strip.sh && \
+  ./strip.sh && \
+  apt-get autoremove dh-strip-nondeterminism rdfind -y && \
   rm -Rf /tmp/*  && \
   apt-get clean -y && \
   rm -Rf /var/lib/apt/lists/* && \

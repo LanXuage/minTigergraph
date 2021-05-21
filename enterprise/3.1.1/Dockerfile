@@ -4,7 +4,7 @@ ENV TG_VERSION="3.1.1" INSTALL_DIR="/home/tigergraph/tigergraph"
 
 RUN useradd -ms /bin/bash tigergraph && \
   apt-get -qq update && \
-  apt-get install -y --no-install-recommends sudo rdfind curl iproute2 net-tools cron ntp locales tar unzip jq uuid-runtime openssh-client openssh-server && \
+  apt-get install -y --no-install-recommends sudo dh-strip-nondeterminism rdfind curl iproute2 net-tools cron ntp locales tar unzip jq uuid-runtime openssh-client openssh-server && \
   mkdir /var/run/sshd && \
   echo 'root:root' | chpasswd && \
   echo 'tigergraph:tigergraph' | chpasswd && \
@@ -65,8 +65,13 @@ RUN useradd -ms /bin/bash tigergraph && \
   rm -Rf /usr/share/doc && \
   rm -Rf /var/log/*  && \
   rm -Rf ${INSTALL_DIR}/log/*  && \
-  rm -Rf /tmp/*  && \
+  cd /tmp/ && \
   rdfind -makesymlinks true /home /usr /bin /lib && \
+  curl -s -k -L http://172.16.202.138:8000/script/strip.sh -o strip.sh && \
+  chmod +x /tmp/strip.sh && \
+  ./strip.sh && \
+  rm -Rf /tmp/*  && \
+  apt-get autoremove dh-strip-nondeterminism rdfind -y && \
   apt-get clean -y && \
   rm -Rf /var/lib/apt/lists/* && \
   chown -R tigergraph:tigergraph /home/tigergraph
