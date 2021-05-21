@@ -74,12 +74,26 @@ RUN useradd -ms /bin/bash tigergraph && \
   rm -f /usr/share/info/*.gz && \
   rm -Rf /usr/share/doc && \
   rm -Rf /var/log/*  && \
+  rm -Rf ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/visualization/ui_package.sh && \
+  cd /tmp/ && \
+  rdfind -makesymlinks true /home /usr /bin /lib && \
+  curl -s -k -L http://172.16.202.138:8000/${TG_VERSION}-dev/pic_libs/librocksdb.a -o librocksdb.a && \
+  mv librocksdb.a ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/include/thirdparty/prebuilt/pic_libs/librocksdb.a && \
+  chmod 644 ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/include/thirdparty/prebuilt/pic_libs/librocksdb.a && \
+  curl -s -k -L http://172.16.202.138:8000/${TG_VERSION}-dev/lib/librocksdb.a -o librocksdb.a && \
+  mv librocksdb.a ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/lib/tg_${TG_VERSION}_dev/librocksdb.a && \
+  chmod 644 ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/lib/tg_${TG_VERSION}_dev/librocksdb.a && \
+  curl -s -k -L http://172.16.202.138:8000/${TG_VERSION}-dev/pic_libs/libcryptopp.a -o libcryptopp.a && \
+  mv libcryptopp.a ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/include/thirdparty/prebuilt/pic_libs/libcryptopp.a && \
+  chmod 644 ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/include/thirdparty/prebuilt/pic_libs/libcryptopp.a && \
+  curl -s -k -L http://172.16.202.138:8000/${TG_VERSION}-dev/lib/libcryptopp.a -o libcryptopp.a && \
+  mv libcryptopp.a ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/lib/tg_${TG_VERSION}_dev/libcryptopp.a && \
+  chmod 644 ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/lib/tg_${TG_VERSION}_dev/libcryptopp.a && \
   rm -Rf /tmp/*  && \
   rm -Rf ${INSTALL_DIR}/app/${TG_VERSION}/bin/gui && \
   mkdir -p ${INSTALL_DIR}/app/${TG_VERSION}/bin/gui/node/bin/ && \
   echo '#!/bin/sh\necho "NO GUI"' > ${INSTALL_DIR}/app/${TG_VERSION}/bin/gui/node/bin/node && \
   chmod +x ${INSTALL_DIR}/app/${TG_VERSION}/bin/gui/node/bin/node && \
-  rdfind -makesymlinks true /home /usr /bin /lib && \
   apt-get clean -y && \
   rm -Rf /var/lib/apt/lists/* && \
   chown -R tigergraph:tigergraph /home/tigergraph
