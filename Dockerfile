@@ -1,8 +1,10 @@
-FROM bitnami/minideb:jessie
+FROM bitnami/minideb:bullseye
 
-ENV TG_VERSION="3.3.0" INSTALL_DIR="/home/tigergraph/tigergraph"
+ENV TG_VERSION="3.4.0" INSTALL_DIR="/home/tigergraph/tigergraph"
 
 RUN useradd -ms /bin/bash tigergraph && \
+  sed -i 's/deb.debian.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list && \
+  sed -i 's/security.debian.org/mirrors.tuna.tsinghua.edu.cn\/debian-security/g' /etc/apt/sources.list && \
   apt-get -qq update && \
   apt-get install -y --no-install-recommends sudo dh-strip-nondeterminism rdfind curl iproute2 net-tools cron ntp locales tar unzip jq uuid-runtime openssh-client openssh-server && \
   mkdir /var/run/sshd && \
@@ -12,11 +14,11 @@ RUN useradd -ms /bin/bash tigergraph && \
   sed -i 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' /etc/pam.d/sshd && \
   echo "tigergraph    ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers && \
   apt-get clean -y && \
-  curl -s -k -L http://172.16.202.137:8000/tigergraph-${TG_VERSION}-offline.tar.gz -o ${INSTALL_DIR}-dev.tar.gz && \
+  curl -s -k -L http://192.168.1.222:8000/tigergraph-${TG_VERSION}-offline.tar.gz -o ${INSTALL_DIR}-dev.tar.gz && \
   /usr/sbin/sshd && \
   mkdir -p ${INSTALL_DIR} && \
   chown -R tigergraph:tigergraph ${INSTALL_DIR} && \
-  mkdir /tmp/tigergraph_logs && \
+  mkdir /var/tmp/tigergraph_logs && \
   cd /home/tigergraph/ && \
   tar xfz tigergraph-dev.tar.gz && \
   rm -f tigergraph-dev.tar.gz && \
@@ -103,6 +105,7 @@ RUN useradd -ms /bin/bash tigergraph && \
   chown -R tigergraph:tigergraph /home/tigergraph
 
 EXPOSE 22
-ENTRYPOINT /usr/sbin/sshd && \
-  ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/kafka_plugins/kafka_plugins_package.sh --target ${INSTALL_DIR}/app/${TG_VERSION}/kafka/plugins/ &&\
-  su - tigergraph bash -c "tail -f /dev/null"
+#ENTRYPOINT /usr/sbin/sshd && \
+#  ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/kafka_plugins/kafka_plugins_package.sh --target ${INSTALL_DIR}/app/${TG_VERSION}/kafka/plugins/ &&\
+#  su - tigergraph bash -c "tail -f /dev/null"
+ENTRYPOINT su - tigergraph bash -c "tail -f /dev/null"
