@@ -1,4 +1,4 @@
-FROM bitnami/minideb:bullseye
+FROM bitnami/minideb:jessie
 
 ENV TG_VERSION="3.4.0" INSTALL_DIR="/home/tigergraph/tigergraph"
 
@@ -14,7 +14,7 @@ RUN useradd -ms /bin/bash tigergraph && \
   sed -i 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' /etc/pam.d/sshd && \
   echo "tigergraph    ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers && \
   apt-get clean -y && \
-  curl -s -k -L http://192.168.1.222:8000/tigergraph-${TG_VERSION}-offline.tar.gz -o ${INSTALL_DIR}-dev.tar.gz && \
+  curl -s -k -L http://192.168.6.137:8000/tigergraph-${TG_VERSION}-offline.tar.gz -o ${INSTALL_DIR}-dev.tar.gz && \
   /usr/sbin/sshd && \
   mkdir -p ${INSTALL_DIR} && \
   chown -R tigergraph:tigergraph ${INSTALL_DIR} && \
