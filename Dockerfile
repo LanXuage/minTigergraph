@@ -1,12 +1,12 @@
 FROM bitnami/minideb:jessie
 
-ENV TG_VERSION="3.4.0" INSTALL_DIR="/home/tigergraph/tigergraph"
+ENV TG_VERSION="3.5.0" INSTALL_DIR="/home/tigergraph/tigergraph"
 
 RUN useradd -ms /bin/bash tigergraph && \
   sed -i 's/deb.debian.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list && \
   sed -i 's/security.debian.org/mirrors.tuna.tsinghua.edu.cn\/debian-security/g' /etc/apt/sources.list && \
   apt-get -qq update && \
-  apt-get install -y --no-install-recommends sudo dh-strip-nondeterminism rdfind curl iproute2 net-tools cron ntp locales tar unzip jq uuid-runtime openssh-client openssh-server && \
+  apt-get install -y --no-install-recommends sudo rdfind curl iproute2 net-tools cron ntp locales tar unzip jq uuid-runtime openssh-client openssh-server && \
   mkdir /var/run/sshd && \
   echo 'root:root' | chpasswd && \
   echo 'tigergraph:tigergraph' | chpasswd && \
@@ -14,7 +14,7 @@ RUN useradd -ms /bin/bash tigergraph && \
   sed -i 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' /etc/pam.d/sshd && \
   echo "tigergraph    ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers && \
   apt-get clean -y && \
-  curl -s -k -L http://192.168.6.137:8000/tigergraph-${TG_VERSION}-offline.tar.gz -o ${INSTALL_DIR}-dev.tar.gz && \
+  curl -s -k -L http://172.17.0.1:8000/tigergraph-${TG_VERSION}-offline.tar.gz -o ${INSTALL_DIR}-dev.tar.gz && \
   /usr/sbin/sshd && \
   mkdir -p ${INSTALL_DIR} && \
   chown -R tigergraph:tigergraph ${INSTALL_DIR} && \
@@ -25,8 +25,10 @@ RUN useradd -ms /bin/bash tigergraph && \
   cd ${INSTALL_DIR}-* && \
   sed -i 's/EXIST_SERVICE=true/EXIST_SERVICE=false/g' utils/check_utils && \
   ./install.sh -n || : && \
-  su - tigergraph -c "${INSTALL_DIR}/app/${TG_VERSION}/cmd/gadmin stop all -y" || \
-  mkdir -p ${INSTALL_DIR}/logs && \
+  su - tigergraph -c "${INSTALL_DIR}/app/${TG_VERSION}/cmd/gadmin stop all -y" && \
+  ln -s ${INSTALL_DIR}/app/${TG_VERSION}/.syspre/usr/lib/libbfd-2.24-system.so /lib/libbfd-2.24-system.so && \
+  ln -s ${INSTALL_DIR}/app/${TG_VERSION}/.syspre/usr/bin/strip /usr/bin/strip && \
+  mkdir -p ${INSTALL_DIR}/log && \
   rm -Rf ${INSTALL_DIR}-* && \
   rm -Rf ${INSTALL_DIR}/app/${TG_VERSION}/syspre_pkg && \
   rm -f ${INSTALL_DIR}/gium_prod.tar.gz && \
@@ -99,13 +101,9 @@ RUN useradd -ms /bin/bash tigergraph && \
   strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/cmd/gcollect && \
   rm -Rf ${INSTALL_DIR}/app/${TG_VERSION}/kafka/plugins/* && \
   rm -Rf /tmp/*  && \
-  apt-get autoremove dh-strip-nondeterminism rdfind -y && \
+  apt-get autoremove rdfind -y && \
   apt-get clean -y && \
   rm -Rf /var/lib/apt/lists/* && \
   chown -R tigergraph:tigergraph /home/tigergraph
 
-EXPOSE 22
-#ENTRYPOINT /usr/sbin/sshd && \
-#  ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/kafka_plugins/kafka_plugins_package.sh --target ${INSTALL_DIR}/app/${TG_VERSION}/kafka/plugins/ &&\
-#  su - tigergraph bash -c "tail -f /dev/null"
 ENTRYPOINT su - tigergraph bash -c "tail -f /dev/null"
