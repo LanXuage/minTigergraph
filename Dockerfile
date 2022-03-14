@@ -1,4 +1,4 @@
-FROM bitnami/minideb:bullseye
+FROM bitnami/minideb:jessie
 
 ENV TG_VERSION="3.4.0" INSTALL_DIR="/home/tigergraph/tigergraph"
 
