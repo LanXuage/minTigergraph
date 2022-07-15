@@ -1,6 +1,6 @@
 FROM bitnami/minideb:jessie
 
-ENV TG_VERSION="3.5.0" INSTALL_DIR="/home/tigergraph/tigergraph"
+ENV TG_VERSION="3.5.3" INSTALL_DIR="/home/tigergraph/tigergraph"
 
 RUN useradd -ms /bin/bash tigergraph && \
   sed -i 's/deb.debian.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list && \
@@ -71,34 +71,34 @@ RUN useradd -ms /bin/bash tigergraph && \
   rm -Rf ${INSTALL_DIR}/log/*  && \
   cd /tmp/ && \
   rdfind -makesymlinks true /home /usr /bin /lib && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/bin/libtigergraph.so && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_dbs_gped && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_dbs_restd && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_app_kafkaldr && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_app_fileldr && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_dbs_gsed && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/bin/batchdelta && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_infr_admind && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_infr_dictd && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/bin/_pygdict.so && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/bin/gsql_data_generator && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_infr_ifmd && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_infr_ctrld && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/bin/gbar_master && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/bin/gbar_slave && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/bin/gbar_bootstrap && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/bin/libjemalloc.so.2 && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/bin/statushubcli && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_infr_goblin && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_infr_ts3d && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_infr_ts3m && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/bin/gui/tg_app_guid && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/lib/tg_${TG_VERSION}_dev/*.a && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/include/thirdparty/prebuilt/pic_libs/*.a && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/cmd/gadmin && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/cmd/gbar && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/cmd/dlv && \
-  strip -S -x ${INSTALL_DIR}/app/${TG_VERSION}/cmd/gcollect && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/libtigergraph.so && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_dbs_gped && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_dbs_restd && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_app_kafkaldr && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_app_fileldr && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_dbs_gsed && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/batchdelta && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_infr_admind && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_infr_dictd && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/_pygdict.so && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/gsql_data_generator && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_infr_ifmd && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_infr_ctrld && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/gbar_master && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/gbar_slave && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/gbar_bootstrap && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/libjemalloc.so.2 && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/statushubcli && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_infr_goblin && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_infr_ts3d && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_infr_ts3m && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/gui/tg_app_guid && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/lib/tg_${TG_VERSION}_dev/*.a && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/include/thirdparty/prebuilt/pic_libs/*.a && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/cmd/gadmin && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/cmd/gbar && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/cmd/dlv && \
+  strip -S ${INSTALL_DIR}/app/${TG_VERSION}/cmd/gcollect && \
   rm -Rf ${INSTALL_DIR}/app/${TG_VERSION}/kafka/plugins/* && \
   rm -Rf /tmp/*  && \
   apt-get autoremove rdfind -y && \
