@@ -1,6 +1,6 @@
 FROM bitnami/minideb:jessie
 
-ENV TG_VERSION="3.5.3" INSTALL_DIR="/home/tigergraph/tigergraph"
+ENV TG_VERSION="3.6.0" INSTALL_DIR="/home/tigergraph/tigergraph"
 
 RUN useradd -ms /bin/bash tigergraph && \
   sed -i 's/deb.debian.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list && \
