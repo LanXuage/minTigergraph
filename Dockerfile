@@ -2,8 +2,6 @@ FROM ubuntu:20.04
 
 ENV TG_VERSION=3.6.3 INSTALL_DIR=/home/tigergraph/tigergraph DEBIAN_FRONTEND=noninteractive
 
-COPY tigergraph-${TG_VERSION}-offline.tar /mnt/tigergraph-dev.tar.gz
-
 RUN useradd -ms /bin/bash tigergraph && \
   sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list && \
   apt-get -qq update && \
