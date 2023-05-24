@@ -13,9 +13,6 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v3
-      - name: Get version
-        id: get_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
       -
         name: Login to Docker Hub
         uses: docker/login-action@v2
@@ -34,4 +31,4 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/tigergraph:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/tigergraph:${{ steps.get_version.outputs.VERSION }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/tigergraph:3.6.3
