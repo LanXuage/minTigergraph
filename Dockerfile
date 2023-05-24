@@ -1,25 +1,25 @@
 FROM ubuntu:20.04
 
-ENV TG_VERSION=3.6.3 INSTALL_DIR=/home/tigergraph/tigergraph
+ENV TG_VERSION=3.6.3 INSTALL_DIR=/home/tigergraph/tigergraph DEBIAN_FRONTEND=noninteractive
+
+COPY tigergraph-${TG_VERSION}-offline.tar /mnt/tigergraph-dev.tar.gz
 
 RUN useradd -ms /bin/bash tigergraph && \
-  # sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list && \
+  sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list && \
   apt-get -qq update && \
   apt-get install -y --no-install-recommends sudo rdfind upx-ucl curl iproute2 net-tools cron ntp locales tar unzip jq uuid-runtime openssh-client openssh-server && \
-  echo 'root:root' | chpasswd && \
   echo 'tigergraph:tigergraph' | chpasswd && \
-  sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config && \
-  echo "tigergraph    ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers && \
-  mkdir -p /run/sshd ${INSTALL_DIR} && \
+  echo "tigergraph ALL = NOPASSWD: /usr/sbin/sshd" >> /etc/sudoers && \
+  sed -i 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' /etc/pam.d/sshd && \
+  mkdir -p /run/sshd && \
   /usr/sbin/sshd && \
   curl -s -k -L https://dl.tigergraph.com/enterprise-edition/tigergraph-${TG_VERSION}-offline.tar.gz -o ${INSTALL_DIR}-dev.tar.gz && \
-  chown -R tigergraph:tigergraph ${INSTALL_DIR} && \
   cd /home/tigergraph/ && \
-  tar xfz tigergraph-dev.tar.gz && \
+  tar -zxvf tigergraph-dev.tar.gz && \
   cd ${INSTALL_DIR}-3.6.3-offline && \
-  sed -i "s%local size=.(awk '/MemTotal/ {print .2}' /proc/meminfo)%local size=8388608%g" utils/os_utils && \
-  sed -i "s%read opt < /dev/tty%opt=y%g" utils/check_utils && \
-  T=`./install.sh -n || :` && \
+  sed -i "s@local size=.(awk '/MemTotal/ {print .2}' /proc/meminfo)@local size=8388608@g" utils/os_utils && \
+  sed -i "s@legacy_exist=true@legacy_exist=false@g" utils/uninstall_platform.sh && \
+  ./install.sh -n || : && \
   su - tigergraph -c "${INSTALL_DIR}/app/${TG_VERSION}/cmd/gadmin stop all -y" && \
   ln -s ${INSTALL_DIR}/app/${TG_VERSION}/.syspre/usr/lib/x86_64-linux-gnu/libbfd-2.26.1-system.so /lib/libbfd-2.26.1-system.so && \
   ln -s ${INSTALL_DIR}/app/${TG_VERSION}/.syspre/usr/bin/strip /usr/bin/strip && \
