@@ -18,7 +18,7 @@ RUN useradd -ms /bin/bash tigergraph && \
   tar xfz tigergraph-dev.tar.gz && \
   cd ${INSTALL_DIR}-3.6.3-offline && \
   sed -i "s%local size=.(awk '/MemTotal/ {print .2}' /proc/meminfo)%local size=8388608%g" utils/os_utils && \
-  ./install.sh -n || cat /home/tigergraph/tigergraph-3.6.3-offline/logs/precheck.log.m1 && \
+  ./install.sh -n && \
   su - tigergraph -c "${INSTALL_DIR}/app/${TG_VERSION}/cmd/gadmin stop all -y" && \
   ln -s ${INSTALL_DIR}/app/${TG_VERSION}/.syspre/usr/lib/x86_64-linux-gnu/libbfd-2.26.1-system.so /lib/libbfd-2.26.1-system.so && \
   ln -s ${INSTALL_DIR}/app/${TG_VERSION}/.syspre/usr/bin/strip /usr/bin/strip && \
