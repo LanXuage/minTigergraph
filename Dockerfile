@@ -25,27 +25,29 @@ RUN useradd -ms /bin/bash tigergraph && \
   rm -rf ${INSTALL_DIR}/app/${TG_VERSION}/document/examples && \
   rm -rf ${INSTALL_DIR}/app/${TG_VERSION}/document/benchmark && \
   rm -rf ${INSTALL_DIR}/app/${TG_VERSION}/document/help && \
+  rm -rf ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/kafka_plugins/kafka_plugins/* && \
   rm -rf ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/document/examples && \
   rm -rf ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/document/benchmark && \
   rm -rf ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/document/help && \
-  rm -f ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/gui/*.tar.gz && \
-  rm -f ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/src/er/platform_independent/*.gz && \
-  rm -f ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsql/lib/.tmp_tg_dbs_gsqld.jar && \
+  rm -rf ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/gui/*.tar.gz && \
+  rm -rf ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/src/er/platform_independent/*.gz && \
+  rm -rf ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsql/lib/.tmp_tg_dbs_gsqld.jar && \
   rm -rf ${INSTALL_DIR}/app/${TG_VERSION}/.syspre/usr/share/man && \
   rm -rf ${INSTALL_DIR}/app/${TG_VERSION}/.syspre/usr/share/doc && \
   rm -rf ${INSTALL_DIR}/app/${TG_VERSION}/.syspre/usr/lib/jvm/jdk-11.0.10+9/man && \
   rm -rf ${INSTALL_DIR}/app/${TG_VERSION}/.syspre/usr/lib/jvm/jdk-11.0.10+9/lib/src.zip && \
   rm -rf ${INSTALL_DIR}/app/${TG_VERSION}/zk/docs && \
-  rm -f ${INSTALL_DIR}/app/${TG_VERSION}/kafka/site-docs/kafka_*.tgz && \
+  rm -rf ${INSTALL_DIR}/app/${TG_VERSION}/kafka/site-docs/kafka_*.tgz && \
+  rm -rf ${INSTALL_DIR}/app/${TG_VERSION}/kafka/plugins/* && \
   rm -rf ${INSTALL_DIR}/data/etcd/member/wal && \
   rm -rf ${INSTALL_DIR}/data/kafka/Event* && \
   rm -rf /usr/share/man/* && \
-  rm -f /usr/share/info/*.gz && \
+  rm -rf /usr/share/info/*.gz && \
   rm -rf /usr/share/doc && \
   rm -rf /var/log/*  && \
   rm -rf ${INSTALL_DIR}/log/*  && \
   rdfind -makesymlinks true /home /usr /bin /lib && \
-  rm -f results.txt && \
+  rm -rf results.txt && \
   strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/libtigergraph.so && \
   strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_dbs_gped && \
   upx -v --best ${INSTALL_DIR}/app/${TG_VERSION}/bin/tg_dbs_gped && \
@@ -88,7 +90,10 @@ RUN useradd -ms /bin/bash tigergraph && \
   strip -S ${INSTALL_DIR}/app/${TG_VERSION}/bin/gui/tg_app_guid && \
   upx -v --best ${INSTALL_DIR}/app/${TG_VERSION}/bin/gui/tg_app_guid && \
   strip -S ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/lib/tg_${TG_VERSION}_dev/*.a && \
+  upx -v --best ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/lib/tg_${TG_VERSION}_dev/libcrypto.so && \
   strip -S ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/include/thirdparty/prebuilt/pic_libs/*.a && \
+  upx -v --best ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/include/thirdparty/prebuilt/bin/protoc && \
+  upx -v --best ${INSTALL_DIR}/app/${TG_VERSION}/dev/gdk/gsdk/include/thirdparty/prebuilt/bin/grpc_cpp_plugin && \
   strip -S ${INSTALL_DIR}/app/${TG_VERSION}/cmd/gadmin && \
   upx -v --best ${INSTALL_DIR}/app/${TG_VERSION}/cmd/gadmin && \
   strip -S ${INSTALL_DIR}/app/${TG_VERSION}/cmd/gbar && \
@@ -97,6 +102,11 @@ RUN useradd -ms /bin/bash tigergraph && \
   upx -v --best ${INSTALL_DIR}/app/${TG_VERSION}/cmd/dlv && \
   strip -S ${INSTALL_DIR}/app/${TG_VERSION}/cmd/gcollect && \
   upx -v --best ${INSTALL_DIR}/app/${TG_VERSION}/cmd/gcollect && \
+  upx -v --best ${INSTALL_DIR}/app/${TG_VERSION}/etcd/etcd && \
+  upx -v --best ${INSTALL_DIR}/app/${TG_VERSION}/etcd/etcdctl && \
+  upx -v --best ${INSTALL_DIR}/app/${TG_VERSION}/nginx/sbin/nginx && \
+  upx -v --best /usr/bin/perl && \
+  rm -rf ${INSTALL_DIR}/tmp/*  && \
   rm -rf /tmp/*  && \
   apt-get autoremove rdfind upx-ucl -y && \
   apt-get clean -y && \
