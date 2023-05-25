@@ -14,7 +14,7 @@ RUN useradd -ms /bin/bash tigergraph && \
   curl -s -k -L https://dl.tigergraph.com/enterprise-edition/tigergraph-${TG_VERSION}-offline.tar.gz -o ${INSTALL_DIR}-dev.tar.gz && \
   cd /home/tigergraph/ && \
   tar -zxvf tigergraph-dev.tar.gz && \
-  cd ${INSTALL_DIR}-3.6.3-offline && \
+  cd ${INSTALL_DIR}-${TG_VERSION}-offline && \
   sed -i "s@local size=.(awk '/MemTotal/ {print .2}' /proc/meminfo)@local size=8388608@g" utils/os_utils && \
   sed -i "s@legacy_exist=true@legacy_exist=false@g" utils/uninstall_platform.sh && \
   ./install.sh -n || : && \
