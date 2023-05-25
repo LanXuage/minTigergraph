@@ -105,6 +105,8 @@ RUN useradd -ms /bin/bash tigergraph && \
   upx -v --best ${INSTALL_DIR}/app/${TG_VERSION}/etcd/etcd && \
   upx -v --best ${INSTALL_DIR}/app/${TG_VERSION}/etcd/etcdctl && \
   upx -v --best ${INSTALL_DIR}/app/${TG_VERSION}/nginx/sbin/nginx && \
+  upx -v --best ${INSTALL_DIR}/app/${TG_VERSION}/.syspre/usr/lib/jvm/java-openjdk/lib/server/libjvm.so && \
+  upx -v --best ${INSTALL_DIR}/app/${TG_VERSION}/.syspre/usr/lib/x86_64-linux-gnu/libvorbisenc.so.2.0.8 && \
   upx -v --best /usr/bin/perl && \
   rm -rf ${INSTALL_DIR}/tmp/*  && \
   rm -rf /tmp/*  && \
